@@ -1,0 +1,18 @@
+# Python 虚拟环境
+automation_env/
+venv/
+.env/
+*.venv/
+
+# Python 缓存文件
+__pycache__/
+*.py[cod]
+*$py.class
+
+# 浏览器驱动和无头浏览器（避免大文件推送）
+chromedriver-win64/
+chrome-headless-shell-win64/
+
+# 其他可能需要忽略的文件
+.DS_Store
+*.log

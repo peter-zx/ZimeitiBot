@@ -1,0 +1,17 @@
+
+PyQt5
+
+
+selenium
+webdriver-manager
+
+
+pyautogui
+pillow
+
+
+openpyxl
+
+
+python-dotenv
+requests

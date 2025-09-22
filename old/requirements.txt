@@ -1,0 +1,5 @@
+
+selenium==4.14.0
+webdriver-manager
+apscheduler==3.10.1
+pytz

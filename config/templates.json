@@ -1,0 +1,6 @@
+{
+  "publish_button": "E:\\ai_work\\zimeitiboot\\config\\templates\\publish_button.png",
+  "upload_image_button": "E:\\ai_work\\zimeitiboot\\config\\templates\\upload_image_button.png",
+  "submit_button": "E:\\ai_work\\zimeitiboot\\config\\templates\\submit_button.png",
+  "chromedriver": "E:\\ai_work\\zimeitiboot\\chromedriver-win64\\chromedriver.exe"
+}
