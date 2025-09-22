@@ -1,0 +1,9 @@
+{
+  "plugins": [
+    {
+      "name": "mock",
+      "module": "platforms.mock_plugin",
+      "class": "MockPlugin"
+    }
+  ]
+}
