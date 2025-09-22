@@ -83,10 +83,18 @@
 
 点击发布 / 定时发布。
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> ce80e5302e41d8bd1ff7348442b2c7bac06778b6
 4. 模块化设计
 
 目录结构如下：
 
+<<<<<<< HEAD
+=======
+```
+>>>>>>> ce80e5302e41d8bd1ff7348442b2c7bac06778b6
 zimeitiboot/
 │
 ├── config/                 # 配置文件
@@ -118,6 +126,12 @@ zimeitiboot/
 ├── main.py                 # 程序入口
 └── requirements.txt
 
+<<<<<<< HEAD
+=======
+
+```
+
+>>>>>>> ce80e5302e41d8bd1ff7348442b2c7bac06778b6
 5. 技术栈
 
 语言：Python 3.13
