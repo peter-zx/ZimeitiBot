@@ -1,0 +1,50 @@
+{
+  "xiaohongshu": {
+    "name": "xiaohongshu",
+    "login_url": "https://creator.xiaohongshu.com/login",
+    "editor_url": "",
+    "upload_selector": "",
+    "notes": "我的操作提示",
+    "steps": [
+      {
+        "step_name": "打开发布入口",
+        "action": "click_template",
+        "template_path": "config/templates/xiaohongshu/upload_image_button.png",
+        "selector": "",
+        "fill_from": ""
+      },
+      {
+        "step_name": "选择上传图文",
+        "action": "click_template",
+        "template_path": "config/templates/xiaohongshu/title_box.png",
+        "selector": "",
+        "fill_from": ""
+      },
+      {
+        "step_name": "点击上传",
+        "action": "click_template",
+        "template_path": "config/templates/xiaohongshu/upload_input_btn.png"
+      },
+      {
+        "step_name": "填写标题",
+        "action": "type_template",
+        "template_path": "config/templates/xiaohongshu/publish_button.png",
+        "fill_from": "task.title",
+        "selector": ""
+      },
+      {
+        "step_name": "填写正文",
+        "action": "type_template",
+        "template_path": "config/templates/xiaohongshu/content_box.png",
+        "fill_from": "task.content"
+      },
+      {
+        "step_name": "发布",
+        "action": "click_template",
+        "template_path": "config/templates/xiaohongshu/publish_button.png",
+        "selector": "",
+        "fill_from": ""
+      }
+    ]
+  }
+}
