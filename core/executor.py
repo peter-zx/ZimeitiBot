@@ -1,48 +1,70 @@
-# -*- coding: utf-8 -*-
-from core.storage import insert_task, append_event, fetch_recent_events, init_db, get_conn
-from datetime import datetime
+from dataclasses import dataclass
+from pathlib import Path
+from loguru import logger
 import time
+import json
 
-class Executor:
-    def __init__(self, plugin_registry):
-        # plugin_registry: dict name -> PluginClass
-        self.plugins = plugin_registry
 
-    def submit_task(self, task: dict):
-        # persist task and return id
-        task_id = insert_task(task)
-        append_event(task_id, 'task.created', str(task))
-        return task_id
+# 可按需导入
+import cv2
+import pyautogui
+from dateutil import parser as dtparser
 
-    def execute_task_by_id(self, task_id: int):
-        # load task from db
-        conn = get_conn()
-        cur = conn.cursor()
-        cur.execute('SELECT * FROM tasks WHERE id=?', (task_id,))
-        row = cur.fetchone()
-        if not row:
-            return {'success': False, 'reason': 'task_not_found'}
-        task = dict(row)
-        append_event(task_id, 'executor.start', 'start executing')
-        # pick plugin by task.platform
-        plugin_name = task.get('platform')
-        plugin_cls = self.plugins.get(plugin_name)
-        if not plugin_cls:
-            append_event(task_id, 'executor.error', f'no plugin for {plugin_name}')
-            return {'success': False, 'reason': f'no plugin {plugin_name}'}
-        plugin = plugin_cls(config={})
-        try:
-            # plugin should implement upload_and_publish and return dict
-            res = plugin.upload_and_publish(task)
-            append_event(task_id, 'executor.finish', str(res))
-            # update task status
-            cur.execute('UPDATE tasks SET status=? WHERE id=?', ('done' if res.get('success') else 'error', task_id))
-            conn.commit()
-            return res
-        except Exception as e:
-            append_event(task_id, 'executor.exception', str(e))
-            cur.execute('UPDATE tasks SET status=? WHERE id=?', ('error', task_id))
-            conn.commit()
-            return {'success': False, 'reason': str(e)}
-        finally:
-            conn.close()
+
+# DOM 模式预留
+try:
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+except Exception:
+webdriver = None
+By = None
+
+
+@dataclass
+class Step:
+name: str
+action_type: str # click_template | type_template | click_selector | type_selector | wait
+template: str | None = None
+selector: str | None = None # XPath/CSS
+fill_from: str | None = None # title|content|media
+extra: dict | None = None
+
+
+class VisualExecutor:
+def __init__(self, templates_root: Path):
+self.templates_root = Path(templates_root)
+pyautogui.PAUSE = 0.3
+
+
+def _match_template(self, template_rel_path: str, confidence: float=0.82):
+img_path = self.templates_root / template_rel_path
+screenshot = pyautogui.screenshot()
+screenshot_cv = cv2.cvtColor(np.array(screenshot), cv2.COLOR_RGB2BGR)
+tpl = cv2.imread(str(img_path))
+res = cv2.matchTemplate(screenshot_cv, tpl, cv2.TM_CCOEFF_NORMED)
+min_val, max_val, min_loc, max_loc = cv2.minMaxLoc(res)
+if max_val < confidence:
+raise RuntimeError(f"Template not found: {template_rel_path}, score={max_val:.2f}")
+h, w = tpl.shape[:2]
+center = (max_loc[0] + w//2, max_loc[1] + h//2)
+return center
+
+
+def click_template(self, template_rel_path: str):
+x, y = self._match_template(template_rel_path)
+pyautogui.moveTo(x, y)
+pyautogui.click()
+
+
+def type_template(self, template_rel_path: str, text: str):
+x, y = self._match_template(template_rel_path)
+pyautogui.click(x, y)
+pyautogui.typewrite(text, interval=0.02)
+
+
+class Runner:
+def __init__(self, platforms_json: Path, templates_root: Path):
+self.platforms_json = Path(platforms_json)
+self.templates_root = Path(templates_root)
+self.visual = VisualExecutor(self.templates_root)
+raise NotImplementedError(step.action_type)

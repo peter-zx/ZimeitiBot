@@ -1,31 +1,14 @@
-<<<<<<< HEAD
 PyQt5
-selenium
-webdriver-manager
 opencv-python
 numpy
 pyautogui
 pillow
+selenium
+webdriver-manager
+pywinauto
+loguru
+python-dateutil
 openpyxl
 plyer
 python-dotenv
 requests
-=======
-
-PyQt5
-
-
-selenium
-webdriver-manager
-
-
-pyautogui
-pillow
-
-
-openpyxl
-
-
-python-dotenv
-requests
->>>>>>> ce80e5302e41d8bd1ff7348442b2c7bac06778b6
